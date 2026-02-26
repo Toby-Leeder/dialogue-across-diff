@@ -1,5 +1,6 @@
 import {client} from '@/sanity/lib/client'
 import {notFound} from 'next/navigation'
+import {toYouTubeEmbed} from '@/lib/video'
 
 type Interview = {
   title: string
@@ -8,66 +9,47 @@ type Interview = {
   youtubeUrl?: string
 }
 
-function toYouTubeEmbed(url: string): string | null {
-  try {
-    const u = new URL(url)
-    // youtu.be/<id>
-    if (u.hostname === 'youtu.be') return `https://www.youtube.com/embed/${u.pathname.slice(1)}`
-    // youtube.com/watch?v=<id>
-    if (u.hostname.includes('youtube.com')) {
-      const id = u.searchParams.get('v')
-      if (id) return `https://www.youtube.com/embed/${id}`
-    }
-    return null
-  } catch {
-    return null
-  }
-}
+export default async function InterviewPage({params}: {params: any}) {
+  // handle both sync and async params without guessing Next version behavior
+  const resolved = typeof params?.then === 'function' ? await params : params
+  const slug = resolved?.slug as string | undefined
+  if (!slug) return notFound()
 
-export default async function InterviewPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>; 
-}) {
-  // Await the params before using them
-  const { slug } = await params;
+  const interview = await client.fetch<Interview | null>(
+    `*[_type=="interview" && slug.current == $slug][0]{title,guest,summary,youtubeUrl}`,
+    {slug}
+  )
 
-  console.log('slug RESULT:', slug);
+  if (!interview) return notFound()
 
-  const interview: Interview | null = await client.fetch(
-    `*[_type == "interview" && slug.current == $slug][0]{
-      title,
-      guest,
-      summary,
-      youtubeUrl
-    }`,
-    { slug } // Now slug is a string, not undefined
-  );
-
-  if (!interview) return notFound();
   const embed = interview.youtubeUrl ? toYouTubeEmbed(interview.youtubeUrl) : null
 
   return (
-    <div style={{padding: 24, maxWidth: 900}}>
-      <h1>{interview.title}</h1>
-      {interview.guest ? <p><strong>Guest:</strong> {interview.guest}</p> : null}
+    <article className="space-y-6">
+      <header className="space-y-2">
+        <h1 className="text-2xl font-semibold">{interview.title}</h1>
+        {interview.guest ? <p className="text-zinc-600">{interview.guest}</p> : null}
+      </header>
 
       {embed ? (
-        <div style={{marginTop: 24}}>
+        <div className="overflow-hidden rounded-lg border">
           <iframe
-            width="100%"
-            height="500"
+            className="aspect-video w-full"
             src={embed}
             title={interview.title}
             allowFullScreen
           />
         </div>
       ) : interview.youtubeUrl ? (
-        <p>
-          Video link: <a href={interview.youtubeUrl}>{interview.youtubeUrl}</a>
+        <p className="text-sm">
+          Video link:{' '}
+          <a className="underline" href={interview.youtubeUrl}>
+            {interview.youtubeUrl}
+          </a>
         </p>
       ) : null}
-    {interview.summary ? <p>{interview.summary}</p> : null}
-    </div>
+
+      {interview.summary ? <p className="max-w-3xl text-zinc-700">{interview.summary}</p> : null}
+    </article>
   )
 }
