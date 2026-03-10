@@ -5,7 +5,7 @@ import { PortableText } from '@portabletext/react'
 type Blog = {
   title: string
   author?: string
-  body?: string
+  body: any[];
   categories?: string
 }
 
