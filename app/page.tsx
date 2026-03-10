@@ -49,7 +49,7 @@ export default async function HomePage() {
             Explore interviews
           </Link>
           <Link
-            href="/blog"
+            href="/blogs"
             className="rounded-md border px-4 py-2 text-sm hover:bg-zinc-50"
           >
             Read the blog
@@ -119,7 +119,7 @@ export default async function HomePage() {
           {posts.map((p) => (
             <Link
               key={p._id}
-              href={`/blog/${p.slug.current}`}
+              href={`/blogs/${p.slug.current}`}
               className="rounded-lg border p-4 hover:bg-zinc-50"
             >
               <div className="font-medium">{p.title}</div>
