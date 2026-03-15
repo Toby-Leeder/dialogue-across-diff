@@ -18,7 +18,7 @@ export default async function BlogsPage() {
   )
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-12 mx-auto max-w-5xl py-16">
       <header className="border-b border-zinc-200 pb-8">
         <h1 className="font-serif text-4xl font-bold text-zinc-900">Fellowship Writing</h1>
         <p className="mt-4 text-lg text-zinc-600">

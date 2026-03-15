@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { client } from '@/sanity/lib/client'
+import HeroVideo from '@/lib/HeroVideo' // adjust path as needed
 
 type InterviewCard = {
   _id: string
@@ -31,25 +32,13 @@ export default async function HomePage() {
   return (
     <div className="space-y-24">
       {/* HERO / MISSION STATEMENT */}
-      <section className="max-w-3xl space-y-6">
-        <h1 className="font-serif text-4xl leading-tight font-bold text-zinc-900 md:text-5xl">
-          Conversations across difference.
-        </h1>
-        <p className="text-lg leading-relaxed text-zinc-600">
-          [Placeholder Mission Statement]: The Berkeley Bridging Fellowship explores how communities holding deeply opposing views can engage in constructive dialogue. This platform hosts interviews, research, and reflections on navigating the complexities of the Israel-Palestine conflict with academic rigor and profound empathy.
-        </p>
-        <div className="pt-4">
-          <Link
-            href="/interviews"
-            className="inline-block bg-zinc-900 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-zinc-800"
-          >
-            Explore the Interviews
-          </Link>
-        </div>
+      <section className="mx-auto space-y-6"> 
+        {/* mx-auto centers the entire section on the screen */}
+        <HeroVideo videoId="dQw4w9WgXcQ" />
       </section>
 
       {/* CONTEXT BLOCKS */}
-      <section className="grid gap-8 border-t border-zinc-200 pt-12 md:grid-cols-2">
+      <section className="grid gap-8 border-t max-w-5xl mx-auto border-zinc-200 pt-12 md:grid-cols-2">
         <div className="space-y-3">
           <h3 className="font-serif text-xl font-bold text-zinc-900">Our Approach</h3>
           <p className="text-zinc-600 leading-relaxed">
@@ -65,7 +54,7 @@ export default async function HomePage() {
       </section>
 
       {/* LATEST INTERVIEWS */}
-      <section className="space-y-8 border-t border-zinc-200 pt-12">
+      <section className="space-y-8 border-t max-w-5xl mx-auto border-zinc-200 pt-12">
         <div className="flex items-end justify-between">
           <h2 className="font-serif text-2xl font-bold text-zinc-900">Recent Interviews</h2>
           <Link href="/interviews" className="text-sm font-medium text-zinc-500 hover:text-zinc-900 transition-colors">
@@ -92,7 +81,7 @@ export default async function HomePage() {
 
       {/* LATEST POSTS */}
       {posts.length > 0 && (
-        <section className="space-y-8 border-t border-zinc-200 pt-12">
+        <section className="space-y-8 border-t mx-auto max-w-5xl border-zinc-200 pt-12">
           <div className="flex items-end justify-between">
             <h2 className="font-serif text-2xl font-bold text-zinc-900">Fellowship Writing</h2>
             <Link href="/blogs" className="text-sm font-medium text-zinc-500 hover:text-zinc-900 transition-colors">
