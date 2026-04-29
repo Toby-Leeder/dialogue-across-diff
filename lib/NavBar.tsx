@@ -8,6 +8,7 @@ import { usePathname } from 'next/navigation' // 1. Import usePathname
 export default function Navbar() {
   const pathname = usePathname()
   const isHomePage = pathname === '/' // 2. Check if we are on the Home Page
+  const isStudioPage = pathname.slice(0,7) === '/studio' 
 
   const { scrollY } = useScroll()
   
@@ -40,8 +41,8 @@ export default function Navbar() {
         Dialogue Across Differences
       </Link>
       <nav className="flex items-center gap-6 text-sm font-medium text-zinc-600">
+        <Link href="/pamphlet" className="hover:text-zinc-900 transition-colors">Pamphlet</Link>
         <Link href="/interviews" className="hover:text-zinc-900 transition-colors">Interviews</Link>
-        <Link href="/blogs" className="hover:text-zinc-900 transition-colors">Blog</Link>
         <Link href="/about" className="hover:text-zinc-900 transition-colors">About</Link>
       </nav>
     </div>
@@ -64,6 +65,11 @@ export default function Navbar() {
       </motion.header>
     )
   }
+
+    if (isStudioPage) {
+      return 
+    }
+
 
   // SCENARIO B: The user is on any other page -> Show the normal, always-visible version
   return (

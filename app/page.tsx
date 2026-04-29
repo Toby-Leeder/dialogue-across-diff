@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { client } from '@/sanity/lib/client'
 import HeroVideo from '@/lib/HeroVideo' // adjust path as needed
 
@@ -37,22 +38,59 @@ export default async function HomePage() {
         <HeroVideo videoId="dQw4w9WgXcQ" />
       </section>
 
-      {/* CONTEXT BLOCKS */}
-      <section className="grid gap-8 border-t max-w-5xl mx-auto border-zinc-200 pt-12 md:grid-cols-2">
-        <div className="space-y-3">
-          <h3 className="font-serif text-xl font-bold text-zinc-900">Our Approach</h3>
-          <p className="text-zinc-600 leading-relaxed">
-            [Placeholder]: We prioritize listening over persuading. By sitting down with students, faculty, and community leaders, we aim to map the landscape of disagreement and find the fragile threads of mutual understanding.
-          </p>
+{/* CONTEXT BLOCKS */}
+      <section className="mx-auto flex w-full max-w-5xl flex-col gap-16 border-t border-zinc-200 pt-12">
+        
+        {/* Our Approach Block - Text Left, Image Right on Desktop */}
+        <div className="grid gap-8 md:grid-cols-2 md:items-center">
+          {/* Text: Left on Desktop, Bottom on Mobile */}
+          <div className="order-2 space-y-3 md:order-1">
+            <h3 className="font-serif text-2xl font-bold text-zinc-900">Our Approach</h3>
+            <p className="leading-relaxed text-zinc-600">
+              We center our methodology on the deliberate practice of bridging. By prioritizing active, empathetic listening over persuasion, we seek to affirm shared humanity rather than confirm competing facts. Through structured engagement with students, faculty, and community leaders, we navigate the complex landscape of disagreement to cultivate mutual respect and identify common ground across profound societal cleavages.
+            </p>
+          </div>
+          
+          {/* Image: Right on Desktop, Top on Mobile */}
+          <div className="order-1 lg:order-2">
+            {/* Updated Image Component */}
+            <div className="relative flex aspect-[4/3] w-full overflow-hidden bg-zinc-100 border border-zinc-200">
+              <Image 
+                src="/assets/images/.webp" 
+                alt="Two individuals engaged in active listening" 
+                fill
+                className="object-cover"
+              />
+            </div>
+          </div>        
         </div>
-        <div className="space-y-3">
-          <h3 className="font-serif text-xl font-bold text-zinc-900">The Cohort</h3>
-          <p className="text-zinc-600 leading-relaxed">
-            [Placeholder]: This space will soon host multiple projects from the current fellowship cohort, ranging from data-driven research to narrative journalism, all unified by the goal of bridging divides.
-          </p>
-        </div>
-      </section>
 
+        {/* The Cohort Block - Image Left, Text Right on Desktop */}
+        <div className="grid gap-8 md:grid-cols-2 md:items-center">
+          {/* Image: Left on Desktop, Top on Mobile */}
+          <div className="order-1 lg:order-2">
+            {/* Updated Image Component */}
+            <div className="relative flex aspect-[4/3] w-full overflow-hidden bg-zinc-100 border border-zinc-200">
+              <Image 
+                src="/assets/images/network.webp" 
+                alt="Two individuals engaged in active listening" 
+                fill
+                className="object-cover"
+              />
+            </div>
+          </div>        
+
+          {/* Text: Right on Desktop, Bottom on Mobile */}
+          <div className="order-2 space-y-3">
+            <h3 className="font-serif text-2xl font-bold text-zinc-900">The Cohort</h3>
+            <p className="leading-relaxed text-zinc-600">
+              This platform serves as a digital commons for the multi-disciplinary capstone projects developed by the current Berkeley Bridging Fellowship cohort. Ranging from data-driven research to narrative journalism, these diverse academic initiatives are unified by a singular social imperative: to bridge divides, reduce polarization, and foster a culture of enduring belonging.
+            </p>
+          </div>
+        </div>
+
+      </section>
+      
       {/* LATEST INTERVIEWS */}
       <section className="space-y-8 border-t max-w-5xl mx-auto border-zinc-200 pt-12">
         <div className="flex items-end justify-between">
@@ -79,30 +117,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* LATEST POSTS */}
-      {posts.length > 0 && (
-        <section className="space-y-8 border-t mx-auto max-w-5xl border-zinc-200 pt-12">
-          <div className="flex items-end justify-between">
-            <h2 className="font-serif text-2xl font-bold text-zinc-900">Fellowship Writing</h2>
-            <Link href="/blogs" className="text-sm font-medium text-zinc-500 hover:text-zinc-900 transition-colors">
-              View all →
-            </Link>
-          </div>
-
-          <div className="grid gap-6 sm:grid-cols-2">
-            {posts.map((p) => (
-              <Link
-                key={p._id}
-                href={`/blogs/${p.slug.current}`}
-                className="group border border-zinc-200 bg-white p-6 transition-all hover:border-zinc-900 hover:shadow-sm"
-              >
-                <div className="font-serif text-xl font-bold text-zinc-900 group-hover:underline decoration-1 underline-offset-4">{p.title}</div>
-                {p.excerpt ? <div className="mt-3 line-clamp-3 text-sm leading-relaxed text-zinc-600">{p.excerpt}</div> : null}
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
     </div>
   )
 }
