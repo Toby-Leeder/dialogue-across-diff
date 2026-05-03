@@ -56,7 +56,7 @@ export default async function HomePage() {
             {/* Updated Image Component */}
             <div className="relative flex aspect-[4/3] w-full overflow-hidden bg-zinc-100 border border-zinc-200">
               <Image 
-                src="/assets/images/.webp" 
+                src="/assets/images/grouptalking2.png" 
                 alt="Two individuals engaged in active listening" 
                 fill
                 className="object-cover"
