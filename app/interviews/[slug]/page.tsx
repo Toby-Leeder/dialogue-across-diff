@@ -2,6 +2,11 @@ import {client} from '@/sanity/lib/client'
 import {notFound} from 'next/navigation'
 import {toYouTubeEmbed} from '@/lib/video'
 import Link from 'next/link'
+import type {Metadata} from 'next'
+
+const siteTitle = 'Dialogue Across Differences'
+
+type PageProps = {params: Promise<{slug: string}>}
 
 type Interview = {
   title: string
@@ -10,9 +15,29 @@ type Interview = {
   youtubeUrl?: string
 }
 
-export default async function InterviewPage({params}: {params: any}) {
-  const resolved = typeof params?.then === 'function' ? await params : params
-  const slug = resolved?.slug as string | undefined
+type InterviewMeta = Pick<Interview, 'title' | 'summary'>
+
+export async function generateMetadata({params}: PageProps): Promise<Metadata> {
+  const {slug} = await params
+  if (!slug) return {title: siteTitle}
+
+  const interview = await client.fetch<InterviewMeta | null>(
+    `*[_type=="interview" && slug.current == $slug][0]{title, summary}`,
+    {slug},
+  )
+
+  if (!interview?.title) {
+    return {title: `Not found · ${siteTitle}`}
+  }
+
+  return {
+    title: `${interview.title} · ${siteTitle}`,
+    description: interview.summary?.trim() || undefined,
+  }
+}
+
+export default async function InterviewPage({params}: PageProps) {
+  const {slug} = await params
   if (!slug) return notFound()
 
   const interview = await client.fetch<Interview | null>(
