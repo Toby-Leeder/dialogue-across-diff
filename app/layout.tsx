@@ -1,8 +1,7 @@
 import { Merriweather, Inter } from 'next/font/google'
 import './globals.css'
-import Link from 'next/link'
 import type { Metadata } from 'next'
-import Navbar from '@/lib/NavBar'
+import NavBarWrapper from '@/lib/NavBarWrapper'
 
 // Configure our new fonts
 const merriweather = Merriweather({ 
@@ -26,7 +25,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
     <html lang="en">
       <body className={`${inter.variable} ${merriweather.variable} font-sans min-h-screen bg-white text-zinc-900 antialiased`}>
         
-        <Navbar />
+        <NavBarWrapper />
 
         <main className="mx-auto max-w-100% px-0 py-0">{children}</main>
 
