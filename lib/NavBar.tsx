@@ -8,7 +8,7 @@ import { usePathname } from 'next/navigation' // 1. Import usePathname
 export default function Navbar() {
   const pathname = usePathname()
   const isHomePage = pathname === '/' // 2. Check if we are on the Home Page
-  const isStudioPage = pathname.slice(0,7) === '/studio' 
+  const isStudioPage = pathname.startsWith('/studio')
 
   const { scrollY } = useScroll()
   
@@ -66,9 +66,9 @@ export default function Navbar() {
     )
   }
 
-    if (isStudioPage) {
-      return 
-    }
+  if (isStudioPage) {
+    return null
+  }
 
 
   // SCENARIO B: The user is on any other page -> Show the normal, always-visible version
