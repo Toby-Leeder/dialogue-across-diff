@@ -58,7 +58,7 @@ function CapstoneCardFace({item}: {item: CapstoneCarouselItem}) {
             alt={item.imageAlt}
             fill
             className="object-cover transition duration-300 group-hover:scale-[1.02]"
-            sizes="(max-width: 640px) 85vw, 22rem"
+            sizes="(max-width: 640px) 90vw, 26rem"
           />
         ) : (
           <div
@@ -72,12 +72,12 @@ function CapstoneCardFace({item}: {item: CapstoneCarouselItem}) {
           </div>
         )}
       </div>
-      <div className="flex flex-1 flex-col gap-2 p-5">
-        <h3 className="font-serif text-lg font-bold leading-snug text-zinc-900 group-hover:underline decoration-1 underline-offset-4">
+      <div className="flex flex-1 flex-col gap-2 p-6">
+        <h3 className="font-serif text-xl font-bold leading-snug text-zinc-900 group-hover:underline decoration-1 underline-offset-4">
           {item.title}
         </h3>
         {item.summary ? (
-          <p className="line-clamp-3 text-sm leading-relaxed text-zinc-600">{item.summary}</p>
+          <p className="line-clamp-3 text-base leading-relaxed text-zinc-600">{item.summary}</p>
         ) : null}
       </div>
     </>
@@ -134,11 +134,11 @@ export function CapstoneCarouselSimple({items}: {items: CapstoneCarouselItem[]})
           <article
             key={item.id}
             role="listitem"
-            className="w-[min(100%,22rem)] shrink-0 snap-start sm:w-[22rem]"
+            className="w-[min(100%,26rem)] shrink-0 snap-start sm:w-[26rem]"
           >
             <CardLink
               href={item.href}
-              className="group flex h-full flex-col overflow-hidden border border-zinc-200 bg-white outline-none transition hover:border-zinc-900 hover:shadow-sm focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-2"
+              className="group flex h-full flex-col overflow-hidden rounded-sm border border-zinc-200 bg-white outline-none transition hover:border-zinc-300 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-zinc-400"
             >
               <CapstoneCardFace item={item} />
             </CardLink>
@@ -171,6 +171,7 @@ function tweenCoverflow(embla: EmblaCarouselType) {
   const norm = Math.max(rootRect.width * 0.36, 200)
 
   embla.slideNodes().forEach((slide) => {
+    const slideEl = slide as HTMLElement
     const target = slide.querySelector<HTMLElement>('[data-coverflow-tween]')
     if (!target) return
 
@@ -180,17 +181,23 @@ function tweenCoverflow(embla: EmblaCarouselType) {
     const abs = Math.abs(p)
     const falloff = Math.pow(abs, 0.92)
 
-    const scaleMin = 0.7
-    const scaleMax = 1.27
+    const scaleMin = 0.72
+    const scaleMax = 1.2
     const scale = scaleMin + Math.pow(1 - abs, 1.2) * (scaleMax - scaleMin)
 
-    const rotateY = p * -38
+    const rotateY = p * -34
     const translateZ = -92 * falloff
     const opacity = 0.56 + Math.pow(1 - abs, 1.05) * (1 - 0.56)
 
     target.style.transform = `translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`
-    target.style.opacity = String(opacity)
-    target.style.zIndex = String(Math.round(100 - falloff * 45))
+
+    // z-index on the flex slide, not only the inner tween: scaled cards overflow their slot;
+    // without this, overlap paints in DOM order and the side tile can cover the center.
+    slideEl.style.position = 'relative'
+    slideEl.style.zIndex = String(Math.round(100 - falloff * 45))
+
+    const fade = slide.querySelector<HTMLElement>('[data-coverflow-fade]')
+    if (fade) fade.style.opacity = String(opacity)
   })
 }
 
@@ -219,17 +226,22 @@ function CapstoneCarouselCoverFlow({items}: {items: CapstoneCarouselItem[]}) {
     [],
   )
 
-  const [viewportRef, emblaApi] = useEmblaCarousel(
-    {
+  const emblaOptions = useMemo(
+    () => ({
       loop: true,
-      align: 'center',
-      // Coast during drag/wheel, then settle on nearest snap (better trackpad momentum).
+      align: 'center' as const,
+      // Start mid-runway: at index 0 Embla's loop slide translations sit on the "seam" and
+      // flex gap + 3D reads asymmetric vs deeper indices (matches "duplicates look right").
+      startIndex: slides.length > 1 ? Math.floor(slides.length / 2) : 0,
+      // dragFree + skipSnaps: coast on hard scroll/wheel; duration softens settle when motion slows.
       dragFree: true,
       skipSnaps: true,
-      duration: 48,
-    },
-    plugins,
+      duration: 52,
+    }),
+    [slides.length],
   )
+
+  const [viewportRef, emblaApi] = useEmblaCarousel(emblaOptions, plugins)
 
   const onTween = useCallback(() => {
     if (!emblaApi) return
@@ -285,7 +297,7 @@ function CapstoneCarouselCoverFlow({items}: {items: CapstoneCarouselItem[]}) {
       <button
         type="button"
         aria-label="Previous capstone project"
-        className="absolute left-0 top-1/2 z-20 hidden -translate-y-1/2 rounded border border-zinc-200 bg-white/95 px-2 py-6 text-zinc-700 shadow-sm backdrop-blur-sm transition hover:bg-white hover:text-zinc-900 md:block"
+        className="absolute left-2 top-1/2 z-20 hidden -translate-y-1/2 rounded border border-zinc-200 bg-white/95 px-2 py-6 text-zinc-700 shadow-sm backdrop-blur-sm transition hover:bg-white hover:text-zinc-900 md:left-3 md:block"
         onClick={scrollPrev}
       >
         ‹
@@ -293,7 +305,7 @@ function CapstoneCarouselCoverFlow({items}: {items: CapstoneCarouselItem[]}) {
       <button
         type="button"
         aria-label="Next capstone project"
-        className="absolute right-0 top-1/2 z-20 hidden -translate-y-1/2 rounded border border-zinc-200 bg-white/95 px-2 py-6 text-zinc-700 shadow-sm backdrop-blur-sm transition hover:bg-white hover:text-zinc-900 md:block"
+        className="absolute right-2 top-1/2 z-20 hidden -translate-y-1/2 rounded border border-zinc-200 bg-white/95 px-2 py-6 text-zinc-700 shadow-sm backdrop-blur-sm transition hover:bg-white hover:text-zinc-900 md:right-3 md:block"
         onClick={scrollNext}
       >
         ›
@@ -302,30 +314,33 @@ function CapstoneCarouselCoverFlow({items}: {items: CapstoneCarouselItem[]}) {
       <div className="[perspective:1100px] [perspective-origin:50%_50%]">
         <div
           ref={viewportRef}
-          className="touch-pan-x overflow-hidden py-12 pl-5 pr-5 md:pl-14 md:pr-14"
+          className="touch-pan-x overflow-hidden py-14 pl-5 pr-5 md:pl-14 md:pr-14"
         >
-          <div className="flex [transform-style:preserve-3d]">
+          <div className="flex gap-5 [transform-style:preserve-3d] md:gap-7">
             {slides.map((item) => (
               <div
                 key={item.id}
-                className="min-w-0 shrink-0 grow-0 pl-2 pr-2"
-                style={{flex: '0 0 min(85vw, 22rem)'}}
+                className="flex min-h-0 min-w-0 shrink-0 grow-0 flex-col pl-1 pr-1 md:pl-1.5 md:pr-1.5"
+                style={{flex: '0 0 min(90vw, 26rem)'}}
               >
-                <div
-                  data-coverflow-tween
-                  className="origin-center will-change-transform [transform-style:preserve-3d]"
+                {/*
+                  Link wraps the tween layer so pointer hits on the transformed card stay inside
+                  the anchor (loop copies share hrefs but are distinct keys). Depth fade applies
+                  only to [data-coverflow-fade] so tile content still dims with coverflow.
+                */}
+                <CardLink
+                  href={item.href}
+                  className="group flex min-h-0 w-full min-w-0 flex-1 flex-col rounded-sm outline-none transition focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-zinc-400"
                 >
-                  {/*
-                    Embla `loop` duplicates slide nodes in the DOM; several tiles may share the same href.
-                    All links stay focusable (pragmatic a11y tradeoff for infinite scroll).
-                  */}
-                  <CardLink
-                    href={item.href}
-                    className="group flex h-full flex-col overflow-hidden border border-zinc-200 bg-white outline-none transition hover:border-zinc-900 hover:shadow-sm focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-2"
+                  <div
+                    data-coverflow-tween
+                    className="flex min-h-0 flex-1 flex-col origin-center overflow-hidden rounded-sm border border-zinc-200 bg-white will-change-transform transition-colors [transform-style:preserve-3d] hover:border-zinc-300"
                   >
-                    <CapstoneCardFace item={item} />
-                  </CardLink>
-                </div>
+                    <div data-coverflow-fade className="flex min-h-0 min-w-0 flex-1 flex-col">
+                      <CapstoneCardFace item={item} />
+                    </div>
+                  </div>
+                </CardLink>
               </div>
             ))}
           </div>
