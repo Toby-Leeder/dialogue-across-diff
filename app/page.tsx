@@ -1,5 +1,4 @@
 import Image from 'next/image'
-import Link from 'next/link'
 import {client} from '@/sanity/lib/client'
 import HeroVideo from '@/lib/HeroVideo'
 import CapstoneCarousel, {type CapstoneCarouselItem} from '@/lib/CapstoneCarousel'
@@ -50,14 +49,20 @@ export default async function HomePage() {
 
   return (
     <div className="space-y-24">
-      {/* HERO / MISSION STATEMENT */}
+      {/* HERO */}
       <section className="mx-auto space-y-4">
         <HeroVideo videoId={heroVideoId} />
-        <p className="text-center text-sm text-zinc-500">
-          <Link href="/video" className="font-medium text-zinc-700 underline decoration-zinc-300 underline-offset-4 transition-colors hover:text-zinc-900 hover:decoration-zinc-900">
-            Open full video page
-          </Link>
-        </p>
+      </section>
+
+      {/* CAPSTONES — above context blocks, slightly wider than body copy */}
+      <section
+        className="mx-auto w-full max-w-6xl space-y-8 border-t border-zinc-200 pt-12"
+        aria-labelledby="capstone-projects-heading"
+      >
+        <h2 id="capstone-projects-heading" className="font-serif text-2xl font-bold text-zinc-900">
+          Capstone projects
+        </h2>
+        <CapstoneCarousel items={carouselItems} />
       </section>
 
       {/* CONTEXT BLOCKS */}
@@ -66,7 +71,7 @@ export default async function HomePage() {
           <div className="order-2 space-y-3 md:order-1">
             <h3 className="font-serif text-2xl font-bold text-zinc-900">Our Approach</h3>
             <p className="leading-relaxed text-zinc-600">
-              We center our methodology on the deliberate practice of bridging. By prioritizing active, empathetic listening over persuasion, we seek to affirm shared humanity rather than confirm competing facts. Through structured engagement with students, faculty, and community leaders, we navigate the complex landscape of disagreement to cultivate mutual respect and identify common ground across profound societal cleavages.
+                The topic of Israel and Palestine is intrinsically difficult to approach. We center our methodology on the deliberate practice of bridging. By prioritizing active, empathetic listening over persuasion, we seek to affirm shared humanity rather than confirm competing facts. Through structured engagement with students, faculty, and experts on the various topics surrounding Israel and Palestine, we navigate the complex landscape of disagreement to cultivate mutual respect and identify common ground across differences. 
             </p>
           </div>
 
@@ -95,22 +100,12 @@ export default async function HomePage() {
           </div>
 
           <div className="order-2 space-y-3">
-            <h3 className="font-serif text-2xl font-bold text-zinc-900">The Cohort</h3>
+            <h3 className="font-serif text-2xl font-bold text-zinc-900">This Website</h3>
             <p className="leading-relaxed text-zinc-600">
-              This platform serves as a digital commons for the multi-disciplinary capstone projects developed by the current Berkeley Bridging Fellowship cohort. Ranging from data-driven research to narrative journalism, these diverse academic initiatives are unified by a singular social imperative: to bridge divides, reduce polarization, and foster a culture of enduring belonging.
+                This platform serves as a digital commons for the multi-disciplinary Capstone Projects developed by the current Berkeley Bridging Fellowship cohort. These projects represent the cultivation of our learnings surrounding dialogue about Israel and Palestine. The goal of these projects is to carry forward the work of the fellowship, maximizing the tangible impact of our experiences. This website is itself a Capstone Project with the goal of further disseminating and sharing our learnings in the fellowship. 
             </p>
           </div>
         </div>
-      </section>
-
-      <section
-        className="mx-auto max-w-5xl space-y-8 border-t border-zinc-200 pt-12"
-        aria-labelledby="capstone-projects-heading"
-      >
-        <h2 id="capstone-projects-heading" className="font-serif text-2xl font-bold text-zinc-900">
-          Capstone projects
-        </h2>
-        <CapstoneCarousel items={carouselItems} />
       </section>
     </div>
   )

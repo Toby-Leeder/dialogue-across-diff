@@ -47,7 +47,7 @@ function CapstonesDropdown({items}: {items: NavbarCapstone[]}) {
         aria-expanded={open}
         aria-haspopup="menu"
         aria-controls={menuId}
-        className="inline-flex items-center gap-1 text-zinc-600 transition-colors hover:text-zinc-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-900"
+        className="inline-flex items-center gap-1 text-base text-zinc-600 transition-colors hover:text-zinc-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-900"
         onClick={() => setOpen((v) => !v)}
       >
         Capstones
@@ -108,19 +108,38 @@ export default function Navbar({capstones = []}: {capstones?: NavbarCapstone[]})
   const pathname = usePathname()
   const isHomePage = pathname === '/'
   const isStudioPage = pathname.startsWith('/studio')
+  const isResearchPage = pathname === '/research' || pathname.startsWith('/research/')
 
   const {scrollY} = useScroll()
 
   const [hidden, setHidden] = useState(isHomePage)
+  /** Research: hide on scroll down, show on scroll up (reading mode). */
+  const [researchHidden, setResearchHidden] = useState(false)
+  const lastScrollYRef = useRef(0)
 
   useMotionValueEvent(scrollY, 'change', (latest) => {
-    if (!isHomePage) return
+    if (isHomePage) {
+      const screenHeight = typeof window !== 'undefined' ? window.innerHeight : 800
+      if (latest > screenHeight * 0.8) {
+        setHidden(false)
+      } else {
+        setHidden(true)
+      }
+      return
+    }
 
-    const screenHeight = typeof window !== 'undefined' ? window.innerHeight : 800
-    if (latest > screenHeight * 0.8) {
-      setHidden(false)
-    } else {
-      setHidden(true)
+    if (isResearchPage) {
+      const last = lastScrollYRef.current
+      const delta = latest - last
+      const noise = 8
+      if (latest <= 32) {
+        setResearchHidden(false)
+      } else if (delta > noise) {
+        setResearchHidden(true)
+      } else if (delta < -noise) {
+        setResearchHidden(false)
+      }
+      lastScrollYRef.current = latest
     }
   })
 
@@ -129,23 +148,20 @@ export default function Navbar({capstones = []}: {capstones?: NavbarCapstone[]})
     else setHidden(true)
   }, [isHomePage])
 
+  useEffect(() => {
+    if (!isResearchPage) return
+    lastScrollYRef.current = typeof window !== 'undefined' ? window.scrollY : 0
+    setResearchHidden(false)
+  }, [isResearchPage])
+
   const navContent = (
     <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-4">
-      <Link href="/" className="font-serif text-xl font-bold text-zinc-900">
+      <Link href="/" className="font-serif text-xl font-bold text-zinc-900 sm:text-2xl">
         Dialogue Across Differences
       </Link>
-      <nav className="flex flex-wrap items-center justify-end gap-x-6 gap-y-2 text-sm font-medium text-zinc-600">
-        <Link href="/pamphlet" className="hover:text-zinc-900 transition-colors">
-          Pamphlet
-        </Link>
-        <Link href="/interviews" className="hover:text-zinc-900 transition-colors">
-          Interviews
-        </Link>
-        <Link href="/video" className="hover:text-zinc-900 transition-colors">
-          Video
-        </Link>
+      <nav className="flex flex-wrap items-center justify-end gap-x-8 gap-y-2 text-base font-medium text-zinc-600">
         {capstones.length > 0 ? <CapstonesDropdown items={capstones} /> : null}
-        <Link href="/about" className="hover:text-zinc-900 transition-colors">
+        <Link href="/about" className="transition-colors hover:text-zinc-900">
           About
         </Link>
       </nav>
@@ -162,6 +178,23 @@ export default function Navbar({capstones = []}: {capstones?: NavbarCapstone[]})
         }}
         animate={hidden ? 'hidden' : 'visible'}
         transition={{duration: 0.4, ease: 'easeInOut'}}
+        className="fixed left-0 right-0 top-0 z-[200] border-b border-zinc-200 bg-white py-5 shadow-sm"
+      >
+        {navContent}
+      </motion.header>
+    )
+  }
+
+  if (isResearchPage) {
+    return (
+      <motion.header
+        initial="visible"
+        variants={{
+          visible: {y: 0, opacity: 1},
+          hidden: {y: '-100%', opacity: 0},
+        }}
+        animate={researchHidden ? 'hidden' : 'visible'}
+        transition={{duration: 0.35, ease: 'easeInOut'}}
         className="fixed left-0 right-0 top-0 z-[200] border-b border-zinc-200 bg-white py-5 shadow-sm"
       >
         {navContent}
