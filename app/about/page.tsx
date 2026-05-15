@@ -17,10 +17,10 @@ export default function AboutPage() {
             <h2 className="font-serif text-3xl font-bold text-zinc-900">What is "Bridging"?</h2>
             <div className="space-y-4 text-base leading-relaxed text-zinc-600">
               <p>
-                At its core, "bridging" is the deliberate practice of building social connections and rapport across the ideological, cultural, or social cleavages that typically divide society. Drawing upon the foundational frameworks developed by UC Berkeley’s Othering & Belonging Institute, we understand bridging not merely as bringing disparate groups into contact, but as a concerted effort to cultivate mutual respect across boundaries of difference.
+                At its core, "bridging" is the deliberate practice of building social connections and rapport across the ideological, cultural, or social differences. Drawing upon the foundational frameworks developed by UC Berkeley’s Othering & Belonging Institute, we understand bridging not merely as bringing disparate groups into contact, but as a concerted effort to cultivate mutual respect and understanding.
               </p>
               <p>
-                The heart of bridging lies in active, empathetic listening. It requires hearing another person's story not with the intent to confirm facts, debate, or persuade, but rather to affirm their shared humanity. Bridging centers narratives over zero-sum competition, acknowledging that individuals can validate each other's identities and fundamental worth even in the midst of profound and sustained disagreement. It does not demand the erasure of difference; instead, it provides a structured capacity to hold space for compassion and common ground.
+                The heart of bridging lies in active, empathetic listening. It requires hearing another person's story not with the intent to confirm facts, debate, or persuade, but rather to affirm their shared humanity. In our fellowship this looks like intentional “following meaning” questions, which we develop and ask with the goal of understanding a speaker. We prioritize learning about what matters to them, not what matters to us. Bridging does not demand the erasure of difference; instead, it provides a structured capacity to hold space for compassion and common ground.
               </p>
             </div>
             
@@ -51,53 +51,27 @@ export default function AboutPage() {
             </div>
           </div>        
           </section>
-        
-        {/* Section 2: The Fellowship */}
-        <section className="grid gap-12 lg:grid-cols-2 lg:items-center">
-          <div className="order-1 md:order-2">
-            {/* Updated Image Component */}
-            <div className="relative flex aspect-video w-full overflow-hidden bg-zinc-100 border border-zinc-200">
-              <Image 
-                src="/assets/images/UCBerkeleyCampus.jpg" 
-                alt="UC Berkeley" 
-                fill
-                className="object-cover"
-              />
-            </div>
-          </div>          <div className="order-2 space-y-6">
-            <h2 className="font-serif text-3xl font-bold text-zinc-900">The Berkeley Bridging Fellowship</h2>
-            <div className="space-y-4 text-base leading-relaxed text-zinc-600">
-              <p>
-                The Berkeley Bridging Fellowship is a rigorous, year-long academic and experiential program designed to equip students with the theoretical frameworks and practical skills necessary to navigate complex societal divides.
-              </p>
-              <p>
-                Throughout the academic year, fellows engage with a variety of leading experts—ranging from sociologists and conflict resolution practitioners to community leaders. By prioritizing listening over persuading, the fellowship challenges students to critically examine the mechanisms of polarization. The culmination of the fellowship requires participants to synthesize their academic learning and practical training into comprehensive capstone projects that contribute meaningfully to public discourse.
-              </p>
-            </div>
-          </div>
-        </section>
 
         {/* Section 3: About This Website */}
         <section className="grid gap-12 lg:grid-cols-2 lg:items-center">
-          <div className="order-2 space-y-6 lg:order-1">
+          <div className="order-2 space-y-6 lg:order-2">
             <h2 className="font-serif text-3xl font-bold text-zinc-900">About This Website</h2>
             <div className="space-y-4 text-base leading-relaxed text-zinc-600">
               <p>
-                <strong className="font-semibold text-zinc-900">Dialogue Across Differences</strong> is itself a capstone project born out of the Berkeley Bridging Fellowship. Designed to act as a digital commons for civic engagement, this website was created to host a diverse array of capstone projects produced by the fellowship cohort.
-              </p>
-              <p>
-                Ranging from data-driven research to narrative journalism, the multi-disciplinary projects featured on this platform are unified by a singular academic and social imperative: to bridge divides, reduce polarization, and foster a culture of enduring belonging.
+                <strong className="font-semibold text-zinc-900">Dialogue Across Differences</strong> is itself a capstone project born out of the Berkeley Bridging Fellowship.                 Designed to act as a digital commons for broader engagement, this website was created to host a diverse array of capstone projects produced by the fellowship cohort. 
+
               </p>
             </div>
           </div>
-          <div className="order-1 md:order-2">
+          <div className="order-1 lg:order-1">
             {/* Updated Image Component */}
-            <div className="relative flex aspect-video w-full overflow-hidden bg-zinc-100 border border-zinc-200">
-              <Image 
-                src="/images/discussion-circle.jpg" 
-                alt="Students engaging in a discussion circle" 
+            <div className="relative flex aspect-video w-full overflow-hidden border border-zinc-200 bg-zinc-100">
+              <Image
+                src="/assets/images/network.webp"
+                alt="Abstract network of connected nodes suggesting many linked projects in a shared digital space"
                 fill
                 className="object-cover"
+                sizes="(max-width: 1023px) 100vw, 50vw"
               />
             </div>
           </div>
