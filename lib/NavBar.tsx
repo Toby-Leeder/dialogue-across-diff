@@ -160,10 +160,13 @@ export default function Navbar({capstones = []}: {capstones?: NavbarCapstone[]})
         Dialogue Across Differences
       </Link>
       <nav className="flex flex-wrap items-center justify-end gap-x-8 gap-y-2 text-base font-medium text-zinc-600">
-        {capstones.length > 0 ? <CapstonesDropdown items={capstones} /> : null}
+        <Link href="/berkeley-bridging-fellowship" className="transition-colors hover:text-zinc-900">
+          The Berkeley Bridging Fellowship
+        </Link>
         <Link href="/about" className="transition-colors hover:text-zinc-900">
           About
         </Link>
+        {capstones.length > 0 ? <CapstonesDropdown items={capstones} /> : null}
       </nav>
     </div>
   )

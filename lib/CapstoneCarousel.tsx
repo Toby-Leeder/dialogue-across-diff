@@ -316,12 +316,13 @@ function CapstoneCarouselCoverFlow({items}: {items: CapstoneCarouselItem[]}) {
           ref={viewportRef}
           className="touch-pan-x overflow-hidden py-14 pl-5 pr-5 md:pl-14 md:pr-14"
         >
-          <div className="flex gap-5 [transform-style:preserve-3d] md:gap-7">
+          <div className="flex gap-7 [transform-style:preserve-3d] md:gap-10">
             {slides.map((item) => (
               <div
                 key={item.id}
+                data-capstone-title={item.title}
                 className="flex min-h-0 min-w-0 shrink-0 grow-0 flex-col pl-1 pr-1 md:pl-1.5 md:pr-1.5"
-                style={{flex: '0 0 min(90vw, 26rem)'}}
+                style={{flex: '0 0 min(92vw, 28rem)'}}
               >
                 {/*
                   Link wraps the tween layer so pointer hits on the transformed card stay inside
@@ -334,7 +335,7 @@ function CapstoneCarouselCoverFlow({items}: {items: CapstoneCarouselItem[]}) {
                 >
                   <div
                     data-coverflow-tween
-                    className="flex min-h-0 flex-1 flex-col origin-center overflow-hidden rounded-sm border border-zinc-200 bg-white will-change-transform transition-colors [transform-style:preserve-3d] hover:border-zinc-300"
+                    className="flex min-h-0 flex-1 flex-col origin-bottom overflow-hidden rounded-sm border border-zinc-200 bg-white will-change-transform transition-colors [transform-style:preserve-3d] hover:border-zinc-300"
                   >
                     <div data-coverflow-fade className="flex min-h-0 min-w-0 flex-1 flex-col">
                       <CapstoneCardFace item={item} />
