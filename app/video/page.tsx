@@ -1,7 +1,7 @@
 import type {Metadata} from 'next'
 import Link from 'next/link'
 
-import HeroVideo from '@/lib/HeroVideo'
+import YouTubeEmbed from '@/lib/YouTubeEmbed'
 import {getHeroVideoId} from '@/lib/heroVideoId'
 
 const siteTitle = 'Dialogue Across Differences'
@@ -26,7 +26,7 @@ export default function VideoPage() {
           well.
         </p>
       </div>
-      <HeroVideo videoId={videoId} />
+      <YouTubeEmbed videoId={videoId} title="Intro video" />
     </div>
   )
 }
