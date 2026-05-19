@@ -108,7 +108,11 @@ export default function Navbar({capstones = []}: {capstones?: NavbarCapstone[]})
   const pathname = usePathname()
   const isHomePage = pathname === '/'
   const isStudioPage = pathname.startsWith('/studio')
-  const isResearchPage = pathname === '/research' || pathname.startsWith('/research/')
+  const isResearchPage =
+    pathname === '/research' ||
+    pathname.startsWith('/research/') ||
+    pathname === '/dialogue-toolkit' ||
+    pathname.startsWith('/dialogue-toolkit/')
 
   const {scrollY} = useScroll()
 
