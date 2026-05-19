@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import {client} from '@/sanity/lib/client'
+import {sanityFetch} from '@/sanity/lib/fetch'
 
 type InterviewListItem = {
   _id: string
@@ -11,7 +11,7 @@ type InterviewListItem = {
 }
 
 export default async function InterviewsPage() {
-  const interviews = await client.fetch<InterviewListItem[]>(
+  const interviews = await sanityFetch<InterviewListItem[]>(
     `*[_type=="interview" && defined(slug.current)] | order(publishedAt desc){
       _id,title,guest,summary,slug,publishedAt
     }`

@@ -29,6 +29,28 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
+## Sanity: live updates without redeploying
+
+1. Add a secret to `.env.local` and Vercel (use a long random string):
+
+   ```bash
+   SANITY_REVALIDATE_SECRET=your-random-secret
+   ```
+
+2. Deploy the site, then in [Sanity Manage](https://www.sanity.io/manage) → your project → **API** → **Webhooks** → **Create**:
+   - **URL:** `https://YOUR_DOMAIN/api/revalidate?secret=YOUR_SANITY_REVALIDATE_SECRET`
+   - **Dataset:** production
+   - **Trigger on:** Create, Update, Delete
+   - **Filter (optional):** `_type in ["capstoneProject", "post", "interview"]`
+
+3. Publish content in Studio (`/studio`). The webhook clears the `sanity` cache tag; the next page load fetches fresh data.
+
+Test locally (with `npm run dev` and the secret in `.env.local`):
+
+```bash
+curl -X POST "http://localhost:3000/api/revalidate?secret=YOUR_SANITY_REVALIDATE_SECRET"
+```
+
 ## Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.

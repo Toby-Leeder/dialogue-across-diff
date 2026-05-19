@@ -1,4 +1,4 @@
-import {client} from '@/sanity/lib/client'
+import {sanityFetch} from '@/sanity/lib/fetch'
 import {notFound} from 'next/navigation'
 import {toYouTubeEmbed} from '@/lib/video'
 import Link from 'next/link'
@@ -21,7 +21,7 @@ export async function generateMetadata({params}: PageProps): Promise<Metadata> {
   const {slug} = await params
   if (!slug) return {title: siteTitle}
 
-  const interview = await client.fetch<InterviewMeta | null>(
+  const interview = await sanityFetch<InterviewMeta | null>(
     `*[_type=="interview" && slug.current == $slug][0]{title, summary}`,
     {slug},
   )
@@ -40,7 +40,7 @@ export default async function InterviewPage({params}: PageProps) {
   const {slug} = await params
   if (!slug) return notFound()
 
-  const interview = await client.fetch<Interview | null>(
+  const interview = await sanityFetch<Interview | null>(
     `*[_type=="interview" && slug.current == $slug][0]{title,guest,summary,youtubeUrl}`,
     {slug}
   )

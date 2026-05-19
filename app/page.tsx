@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import {client} from '@/sanity/lib/client'
+import {sanityFetch} from '@/sanity/lib/fetch'
 import HeroVideo from '@/lib/HeroVideo'
 import CapstoneCarousel, {type CapstoneCarouselItem} from '@/lib/CapstoneCarousel'
 import {getHeroVideoId} from '@/lib/heroVideoId'
@@ -17,7 +17,7 @@ type CapstoneDoc = {
 }
 
 export default async function HomePage() {
-  const capstones = await client.fetch<CapstoneDoc[]>(
+  const capstones = await sanityFetch<CapstoneDoc[]>(
     `*[_type == "capstoneProject"] | order(sortOrder asc, title asc) {
       _id,
       title,

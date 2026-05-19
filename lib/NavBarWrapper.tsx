@@ -1,9 +1,9 @@
-import {client} from '@/sanity/lib/client'
+import {sanityFetch} from '@/sanity/lib/fetch'
 import Navbar from '@/lib/NavBar'
 import type {NavbarCapstone} from '@/lib/navBarTypes'
 
 export default async function NavBarWrapper() {
-  const rows = await client.fetch<{title?: string | null; href?: string | null}[]>(
+  const rows = await sanityFetch<{title?: string | null; href?: string | null}[]>(
     `*[_type == "capstoneProject"] | order(sortOrder asc, title asc) {
       title,
       href
