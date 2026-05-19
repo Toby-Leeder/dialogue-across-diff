@@ -51,7 +51,7 @@ function CardLink({
 function CapstoneCardFace({item}: {item: CapstoneCarouselItem}) {
   return (
     <>
-      <div className="relative aspect-[4/3] w-full bg-zinc-100">
+      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-t-sm bg-zinc-100">
         {item.imageUrl ? (
           <Image
             src={item.imageUrl}
@@ -289,7 +289,7 @@ function CapstoneCarouselCoverFlow({items}: {items: CapstoneCarouselItem[]}) {
 
   return (
     <div
-      className="relative"
+      className="relative overflow-visible"
       role="region"
       aria-roledescription="carousel"
       aria-label="Capstone projects"
@@ -311,10 +311,10 @@ function CapstoneCarouselCoverFlow({items}: {items: CapstoneCarouselItem[]}) {
         ›
       </button>
 
-      <div className="[perspective:1100px] [perspective-origin:50%_50%]">
+      <div className="overflow-visible [perspective:1100px] [perspective-origin:50%_50%]">
         <div
           ref={viewportRef}
-          className="touch-pan-x overflow-hidden py-14 pl-5 pr-5 md:pl-14 md:pr-14"
+          className="touch-pan-x overflow-x-hidden overflow-y-visible py-14 pl-5 pr-5 md:pl-14 md:pr-14"
         >
           <div className="flex gap-7 [transform-style:preserve-3d] md:gap-10">
             {slides.map((item) => (
@@ -335,7 +335,7 @@ function CapstoneCarouselCoverFlow({items}: {items: CapstoneCarouselItem[]}) {
                 >
                   <div
                     data-coverflow-tween
-                    className="flex min-h-0 flex-1 flex-col origin-bottom overflow-hidden rounded-sm border border-zinc-200 bg-white will-change-transform transition-colors [transform-style:preserve-3d] hover:border-zinc-300"
+                    className="flex min-h-0 flex-1 flex-col origin-center overflow-visible rounded-sm border border-zinc-200 bg-white will-change-transform transition-colors [transform-style:preserve-3d] hover:border-zinc-300"
                   >
                     <div data-coverflow-fade className="flex min-h-0 min-w-0 flex-1 flex-col">
                       <CapstoneCardFace item={item} />
