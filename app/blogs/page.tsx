@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import {client} from '@/sanity/lib/client'
+import {sanityFetch} from '@/sanity/lib/fetch'
 
 type BlogListItem = {
   _id: string
@@ -11,7 +11,7 @@ type BlogListItem = {
 }
 
 export default async function BlogsPage() {
-  const blogs = await client.fetch<BlogListItem[]>(
+  const blogs = await sanityFetch<BlogListItem[]>(
     `*[_type=="post" && defined(slug.current)] | order(publishedAt desc){
       _id,title,author,excerpt,slug,publishedAt
     }`

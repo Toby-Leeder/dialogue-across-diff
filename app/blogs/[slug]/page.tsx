@@ -1,7 +1,17 @@
-import {client} from '@/sanity/lib/client'
+import {sanityFetch} from '@/sanity/lib/fetch'
 import {notFound} from 'next/navigation'
 import { PortableText } from '@portabletext/react'
 import Link from 'next/link'
+import type {Metadata} from 'next'
+
+const siteTitle = 'Dialogue Across Differences'
+
+type PageProps = {params: Promise<{slug: string}>}
+
+type BlogMeta = {
+  title: string
+  plain?: string | null
+}
 
 type Blog = {
   title: string
@@ -31,12 +41,34 @@ const portableTextStyles = {
   },
 }
 
-export default async function BlogPage({params}: {params: any}) {
-  const resolved = typeof params?.then === 'function' ? await params : params
-  const slug = resolved?.slug as string | undefined
+export async function generateMetadata({params}: PageProps): Promise<Metadata> {
+  const {slug} = await params
+  if (!slug) return {title: siteTitle}
+
+  const blog = await sanityFetch<BlogMeta | null>(
+    `*[_type=="post" && slug.current == $slug][0]{title, "plain": string::slice(pt::text(body), 0, 160)}`,
+    {slug},
+  )
+
+  if (!blog?.title) {
+    return {title: `Not found · ${siteTitle}`}
+  }
+
+  const plain = blog.plain?.trim() ?? ''
+  const description =
+    plain.length === 0 ? undefined : plain.length >= 160 ? `${plain}…` : plain
+
+  return {
+    title: `${blog.title} · ${siteTitle}`,
+    description,
+  }
+}
+
+export default async function BlogPage({params}: PageProps) {
+  const {slug} = await params
   if (!slug) return notFound()
 
-  const blog = await client.fetch<Blog | null>(
+  const blog = await sanityFetch<Blog | null>(
     `*[_type=="post" && slug.current == $slug][0]{title,author,categories,body}`,
     {slug}
   )
